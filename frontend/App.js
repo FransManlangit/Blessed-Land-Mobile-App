@@ -1,20 +1,45 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 
-export default function App() {
+import * as React from 'react';
+import { View, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Auth from "./Context/Store/Auth"
+import Main from './Navigators/Main';
+import Toast from "react-native-toast-message";
+import store from "./Redux/store";
+import { Provider } from "react-redux";
+
+import { NativeBaseProvider, extendTheme } from "native-base";
+
+const newColorTheme = {
+  brand: {
+    900: "#8287af",
+    800: "#7c83db",
+    700: "#b3bef6",
+  },
+};
+const theme = extendTheme({ colors: newColorTheme });
+
+const Stack = createNativeStackNavigator();
+
+function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Auth>
+      <Provider store={store}>
+       <NativeBaseProvider theme={theme}>
+      <NavigationContainer>
+        <Main/>
+        <Toast/>
+      </NavigationContainer>
+      </NativeBaseProvider>
+      </Provider>
+    </Auth>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
+
+
+
+
+export default App;
